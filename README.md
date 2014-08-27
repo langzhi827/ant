@@ -1,3 +1,3 @@
-ant nodejs+angularjs
+nodejs+angularjs
 
 The first nodejs project
