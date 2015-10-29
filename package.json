@@ -1,0 +1,23 @@
+{
+    "name": "ant",
+    "version": "0.1.0",
+    "description": "the first node project.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/langzhi827/ant.git"
+    },
+    "keywords": [
+    "node",
+    "nodejs"
+  ],
+    "author": "harry.lang",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/langzhi827/ant/issues"
+    },
+    "homepage": "https://github.com/langzhi827/ant#readme"
+}
