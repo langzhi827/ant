@@ -8,4 +8,4 @@ UserDao.queryById = function () {
 
 }
 
-module.exports = new UserDao();
+module.exports = UserDao;

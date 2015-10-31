@@ -1,7 +1,3 @@
 module.exports = {
-    mongodb: {
-        host: 'localhost',
-        database: 'ant',
-        port: ''
-    }
+    mongodb_url: 'mongodb://localhost:27017/ant'
 };

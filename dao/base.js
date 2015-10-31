@@ -3,16 +3,16 @@ function BaseDao(model) {
 }
 
 BaseDao.prototype.save = function (obj, callback) {
-    this.model.create(obj, function (error) {
-        if (error) {
-            return callback(error)
-        };
-        return callback(obj);
-    });
+    this.model.create(obj, callback);
 }
 
-BaseDao.prototype.delete = function () {}
+BaseDao.prototype.delete = function () {
+}
 
-BaseDao.prototype.update = function () {}
+BaseDao.prototype.update = function () {
+}
 
-BaseDao.prototype.query = function () {}
+BaseDao.prototype.query = function () {
+}
+
+module.exports = BaseDao;
