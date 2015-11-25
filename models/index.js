@@ -1,3 +1,3 @@
 require('./db');
 
-exports.User = require('./User');
+exports.User = require('./user');
