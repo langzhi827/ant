@@ -21,6 +21,9 @@
   },
   "homepage": "https://github.com/langzhi827/ant#readme",
   "dependencies": {
-    "mongoose": "^4.2.3"
+    "express": "^4.13.3",
+    "mongoose": "^4.2.3",
+    "nodemailer": "^1.10.0",
+    "validator": "^4.3.0"
   }
 }
