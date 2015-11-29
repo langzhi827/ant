@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/langzhi827/ant#readme",
   "dependencies": {
+    "body-parser": "^1.14.1",
     "express": "^4.13.3",
     "mongoose": "^4.2.3",
     "nodemailer": "^1.10.0",

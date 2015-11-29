@@ -1,30 +1,49 @@
-var UserDao = require('./dao/user');
+var express = require('express');
+var routers = require('./routers');
+var resRule = require('./helpers/response_rule');
+var config = require('./config');
+var http = require('http');
+var bodyParser = require('body-parser');
 
-/*UserDao.save({
- username:'harry.lang',
- email:'harry.lang@yunzhihui.com',
- password:'123456'
- },function(){
- console.log(arguments);
- });*/
+var app = express();
+// environments
+app.set('port', process.env.PORT || config.port);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
-/*
- console.log('----------------')
- console.log(require('validator').isEmail('aha@s.com'))
- console.log('----------------')*/
+// router
+app.use('/api', routers);
 
-UserDao.findOne({'$or': [
-    {'username': 'harry.'},
-    {'email': 'harry.lang@yunzhihui.com'}
-]}, function (error, data) {
-    console.log(arguments)
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
-/*
- var mailhHtml = '<div>您已注册成功，请点击以下链接完成验证：</div><a href="www.learnjs.cn">go</a>';
- require('./helpers/send_email')('harry.lang@yunzhihui.com', 'ant用户注册验证', mailhHtml, function (error, info) {
- if (error) {
- console.log(error);
- } else {
- console.log('Message sent: ' + info.response);
- }
- });*/
+
+app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.json(resRule.error(err.message, err.stack));
+});
+
+//
+var server = http.createServer(app).listen(app.get('port'));
+
+server.on('error', onError);
+server.on('listening', onListening);
+
+function onError(error) {
+    console.log(error);
+    throw error;
+}
+
+function onListening() {
+    console.log('Listening on port %d', app.get('port'));
+}
+
+process.on('uncaughtException', function (err) {
+    console.log('----------------');
+    console.log(err);
+});
+
+module.exports = app;

@@ -4,6 +4,8 @@ var validator = require('validator');
 var resRule = require('../helpers/response_rule');
 var UserDao = require('../dao/user');
 var sendEmail = require('../helpers/send_email');
+var util = require('util');
+var config = require('../config');
 
 /**
  * 注册只需要 email/password即可
@@ -15,12 +17,15 @@ router.post('/register', function (req, res, next) {
 
     if (password === '' || email === '') {
         res.json(resRule.error('email或者密码不能为空!'));
+        return;
     }
-    if (validator.isEmail(email)) {
-        res.json(resRule.error('email格式不正确!'));
+    if (!validator.isEmail(email)) {
+        res.send(resRule.error('email格式不正确!'));
+        return;
     }
-    if (validator.isBase64(password)) {
+    if (!validator.isBase64(password)) {
         res.json(resRule.error('密码必须为base64编码格式!'));
+        return;
     }
     UserDao.findOne({'email': email}, function (error, data) {
         if (error) {
@@ -28,20 +33,21 @@ router.post('/register', function (req, res, next) {
         }
         if (data) {
             res.json(resRule.error('邮箱已经存在!'));
+            return;
         }
 
         UserDao.save({email: email, password: password}, function (err, data) {
             if (err) {
                 return next(err);
             }
-            res.json(resRule.success('恭喜您注册成功，已发送激活邮件至您的邮箱，请激活邮箱！'));
+            res.json(resRule.success('恭喜您注册成功，已发送激活邮件至您的邮箱，请激活邮箱！', data));
 
-            var mailhHtml = '<div>您已注册成功，请点击以下链接完成验证：</div><a href="www.learnjs.cn">go</a>';
-            sendEmail(email, '用户注册验证', mailhHtml, function (error, info) {
+            var emailHtml = '<div>您已注册成功，请点击以下链接完成验证：</div><a href="www.learnjs.cn?email=%s">%s</a>';
+            sendEmail(email, '用户注册验证', util.format(emailHtml, email, email), function (error, info) {
                 if (error) {
-                    //console.log(error);
+                    console.log(error);
                 } else {
-                    //console.log('Message sent: ' + info.response);
+                    console.log('Message sent: ' + info.response);
                 }
             });
         });
@@ -57,8 +63,7 @@ router.post('/register', function (req, res, next) {
 
      }
      });*/
-
-
 });
+
 
 module.exports = router;
