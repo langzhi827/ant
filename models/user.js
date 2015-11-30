@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema; //相当表结构
 
 var UserSchema = new Schema({
-    username: {type: String},
-    password: {type: String, unique: true},
+    username: {type: String, unique: true},
+    password: {type: String},
     email: {type: String, unique: true},
     head: {type: String, default: '/img/default_head.png'},
     sex: String,

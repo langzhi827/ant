@@ -6,6 +6,7 @@ var UserDao = require('../dao/user');
 var sendEmail = require('../helpers/send_email');
 var util = require('util');
 var config = require('../config');
+var encrypt = require('../helpers/encrypt');
 
 /**
  * 注册只需要 email/password即可
@@ -36,7 +37,7 @@ router.post('/register', function (req, res, next) {
             return;
         }
 
-        UserDao.save({email: email, password: password}, function (err, data) {
+        UserDao.save({username: email, email: email, password: password}, function (err, data) {
             if (err) {
                 return next(err);
             }
