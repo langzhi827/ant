@@ -65,6 +65,35 @@ router.post('/register', function (req, res, next) {
      }
      });*/
 });
+/**
+ * 登录（使用邮件登录）
+ */
+router.post('/login', function (req, res, next) {
+    var email = validator.trim(req.body.email).toLowerCase();
+    var password = validator.trim(req.body.password).toLowerCase();
 
+    if (password === '' || email === '') {
+        res.json(resRule.error('email或者密码不能为空!'));
+        return;
+    }
+    UserDao.findOne({email: email}, function (error, user) {
+        if (error) {
+            return next(error);
+        }
+
+        if (!user) {
+            res.json(resRule.error('邮箱不存在!'));
+            return;
+        }
+
+        if (password !== user.password) {
+            return res.json(resRule.error('密码输入错误!'));
+        }
+
+        res.json(resRule.success('登录成功！', user));
+
+    });
+
+});
 
 module.exports = router;
