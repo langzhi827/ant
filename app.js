@@ -8,7 +8,17 @@ var bodyParser = require('body-parser');
 var app = express();
 // environments
 app.set('port', process.env.PORT || config.port);
+// create application/json parser
 app.use(bodyParser.json());
+/** bodyParser.urlencoded -> 返回只解析urlencoded body的中间件
+ * create application/x-www-form-urlencoded parser
+ * extended 允许在解析URL-encoded的时候选择querystring库（false）或者qs库
+ * 比如：post --> {user[email]: "123@gmail.com", user[password]: "bGFuZ3poaQ=="}
+ *
+ *  querystring --> {user[email]: "123@gmail.com", user[password]: "bGFuZ3poaQ=="}
+ *  qs --> { user: { email: '123@gmail.com', password: 'bGFuZ3poaQ==' } }
+ *
+ */
 app.use(bodyParser.urlencoded({extended: false}));
 
 // router
