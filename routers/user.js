@@ -8,6 +8,12 @@ var util = require('util');
 var config = require('../config');
 var encrypt = require('../helpers/encrypt');
 
+function setSession(res, user) {
+    var expireDays = 20; // 有效期，单位：天
+    //将两个Cookie设置为10天后过期
+    res.cookie(config.auth_cookie_name, encrypt.sha1(user.id + user.email), {path: '/', maxAge: expireDays * 24 * 3600 * 1000});
+}
+
 /**
  * 注册只需要 email/password即可
  *
@@ -89,7 +95,8 @@ router.post('/login', function (req, res, next) {
         if (password !== user.password) {
             return res.json(resRule.error('密码输入错误!'));
         }
-
+        // 通过cookie设置session
+        setSession(res, user);
         res.json(resRule.success('登录成功！', user));
 
     });

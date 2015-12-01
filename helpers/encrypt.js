@@ -1,3 +1,5 @@
-/**
- * Created by lz on 15/11/30.
- */
+var crypto = require('crypto');
+
+exports.sha1 = function (str) {
+    return crypto.createHash('sha1').update(str).digest('hex');
+}
