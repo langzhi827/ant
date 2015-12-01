@@ -24,10 +24,10 @@ router.post('/register', function (req, res, next) {
         res.send(resRule.error('email格式不正确!'));
         return;
     }
-    if (!validator.isBase64(password)) {
-        res.json(resRule.error('密码必须为base64编码格式!'));
-        return;
-    }
+    /*if (!validator.isBase64(password)) {
+     res.json(resRule.error('密码必须为base64编码格式!'));
+     return;
+     }*/
     UserDao.findOne({'email': email}, function (error, data) {
         if (error) {
             return next(error);
