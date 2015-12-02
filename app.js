@@ -2,7 +2,6 @@ var express = require('express');
 var routers = require('./routers');
 var resRule = require('./helpers/response_rule');
 var config = require('./config');
-var http = require('http');
 var bodyParser = require('body-parser');
 
 var app = express();
@@ -37,7 +36,7 @@ app.use(function (err, req, res, next) {
 });
 
 //
-var server = http.createServer(app).listen(app.get('port'));
+var server = app.listen(app.get('port'));
 
 server.on('error', onError);
 server.on('listening', onListening);
