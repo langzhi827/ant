@@ -21,4 +21,4 @@ db.on('error', function () {
     console.log('Mongodb error at ' + new Date());
 });
 
-module.exports = mongoose;
+module.exports = db;
