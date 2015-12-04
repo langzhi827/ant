@@ -5,7 +5,8 @@ var config = require('./config');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
-var MongoDBStore = require('connect-mongodb-session')(session);
+var MongoStore = require('connect-mongo')(session);
+var db = require('./models/db');
 
 var app = express();
 // environments
@@ -25,38 +26,23 @@ app.use(bodyParser.urlencoded({extended: false}));
 // cookie 中间件,将cookie解析成json格式
 app.use(cookieParser());
 //通过session中间件设置session信息
-var store = new MongoDBStore({
-    //uri: config.mongodb_url,
-    connection: require('./models/db').client,
-    collection: 'ant_session',
-    auto_reconnect:true
-});
-// Catch errors
-store.on('error', function (error) {
-    console.log('session store error---> ' + error.stack);
-});
 app.use(session({
     name: config.auth_cookie_name,
     secret: 'ant',
+    saveUninitialized: true,
     resave: false,
-    saveUninitialized: false,
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
-    },
-    store: store
+    store: new MongoStore({
+        mongooseConnection: db,
+        collection: 'ant_session',
+        ttl: 5 * 24 * 60 * 60
+    })
 }));
 
 //设置auth认证中间件
-app.use(function (req, res, next) {
-    console.log(req.session);
-    next();
-});
+//app.use(require('./middlewares/auth'));
 
 // router
 app.use('/api', routers);
-app.get('/', function (req, res, next) {
-    res.end('11111');
-});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -100,7 +100,6 @@ router.post('/login', function (req, res, next) {
         }
         // 设置session信息
         req.session.user = user;
-        console.log(req.session)
         res.json(resRule.success('登录成功！', user));
 
     });
