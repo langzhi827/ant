@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var db = require('./models/db');
+var path = require('path');
 
 var app = express();
 // environments
@@ -40,6 +41,8 @@ app.use(session({
 
 //设置auth认证中间件
 //app.use(require('./middlewares/auth'));
+// 配置静态资源
+app.use('/upload_file', express.static(path.join(__dirname, 'upload_file')));
 
 // router
 app.use('/api', routers);
