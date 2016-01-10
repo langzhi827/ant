@@ -1,5 +1,4 @@
 var express = require('express');
-var routers = require('./routers');
 var resRule = require('./helpers/response_rule');
 var config = require('./config');
 var bodyParser = require('body-parser');
@@ -12,6 +11,12 @@ var path = require('path');
 var app = express();
 // environments
 app.set('port', process.env.PORT || config.port);
+
+// 视图引擎设置
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'html');
+app.engine('.html', require('ejs').__express);
+
 // create application/json parser
 app.use(bodyParser.json());
 /** bodyParser.urlencoded -> 返回只解析urlencoded body的中间件
@@ -43,9 +48,11 @@ app.use(session({
 //app.use(require('./middlewares/auth'));
 // 配置静态资源
 app.use('/upload_file', express.static(path.join(__dirname, 'upload_file')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // router
-app.use('/api', routers);
+app.use('/', require('./routers/views'));
+app.use('/api', require('./routers/api'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
